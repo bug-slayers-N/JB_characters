@@ -20,7 +20,7 @@ $('go').onclick=()=>{used=[];
   drop=new Set(pool.map(i=>[Math.random(),i]).sort((a,b)=>a[0]-b[0]).slice(0,Math.round(pool.length*.1)).map(x=>x[1]));
   miss=ok=turns=0;$('list').innerHTML='';say('bc','');say('bm','');$('miss').textContent=0;show('game');mine()};
 function mine(){
-  if(used.length>=E.length)return end(0,'答えが全部出切りました');
+  if(used.length>=E.length)return end(1,'答えが全部出切りました');
   turns++;on=1;lock(false);$('in').focus();$('msg').textContent='あなたの番です';
   clearInterval(tm);const t=LV[lv][2];
   if(t){rem=t;tick();tm=setInterval(tick,1000)}else $('time').textContent='制限なし';
@@ -40,6 +40,7 @@ function put(k,w){
   $('list').append(li);$('list').scrollTop=1e9;
 }
 function cpu(){
+  if(used.length>=E.length)return end(1,'答えが全部出切りました');
   turns++;lock(true);$('msg').textContent='';say('bc','…');
   const n=used.length,area=E.map((_,i)=>i).filter(i=>E[i].g<=lv&&!drop.has(i)&&!used.includes(i));
   setTimeout(()=>{
