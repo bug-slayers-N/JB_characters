@@ -53,9 +53,9 @@ function end(w,r){
   setTimeout(()=>{
     const n=LV[lv][0];$('rtW').toggleAttribute('hidden',!w);$('rtL').toggleAttribute('hidden',!!w);$('rtE').textContent=w?'WIN':'LOSE';$('result').className=w?'win':'lose';$('rr').textContent=r;
     $('rl').textContent=n;$('ro').textContent=ok;$('rn').textContent=turns;
-    const t=`ジャンケットバンク古今東西ゲームで\n【${n}】に${w?'勝利しました！':'敗北しました…'}`;
+    const t=`【非公式】JB古今東西ゲームで【${n}】に${w?'勝利しました！':'敗北しました…'}`;
     $('x').href='https://twitter.com/intent/tweet?text='+encodeURIComponent(t)+'&url='+encodeURIComponent(location.href.split('#')[0]);
     show('result');
   },1500);
 }
-$('back').onclick=()=>show('start');
+$('back').onclick=$('back2').onclick=()=>show('start');
