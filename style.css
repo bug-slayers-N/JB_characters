@@ -55,3 +55,5 @@ button,.btn{display:block;width:100%;padding:14px 16px;font-weight:700;text-alig
 .ttl::before{top:-7px}.ttl::after{bottom:-7px}
 [data-theme=a] .eb::before,[data-theme=a] .eb::after{content:"";display:inline-block;width:44px;height:1px;background:#e6c36a;vertical-align:middle;margin:0 12px}
 @media(prefers-reduced-motion:reduce){*{animation:none!important}}
+.note{text-align:center;margin:22px 0 0;font-size:12px;letter-spacing:.12em;color:var(--a);opacity:.7}
+.sort{display:flex;gap:6px;justify-content:flex-end}.sort button{width:auto;padding:1px 12px;font-size:12px;border-radius:14px;background:none;box-shadow:none;border:1px solid #e6c36a77;color:var(--a);font-weight:400}.sort .on{background:var(--a);color:#1a1405;font-weight:700}

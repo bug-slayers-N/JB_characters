@@ -8,14 +8,16 @@ GROUPS.forEach((t,g)=>t.trim().split('\n').forEach(l=>{
   keys.push(name,...(al?al.split(','):[]));
   const i=E.length;E.push({name,d,g});keys.forEach(k=>M.set(N(k),i));
 }));
-let lv,used,miss,ok,turns,tm,rem,on,drop;
+const Y=new Map(YOMI.trim().split('\n').map(l=>l.split('=')));
+const R=E.map(e=>(Y.get(e.name)||e.name).replace(/[ァ-ヶ]/g,c=>String.fromCharCode(c.charCodeAt(0)-96)));
+let lv,used,side,sm=0,miss,ok,turns,tm,rem,on,drop;
 const show=id=>document.querySelectorAll('section').forEach(s=>s.hidden=s.id!==id);
 const lock=b=>{$('in').disabled=$('ok').disabled=b};
 const say=(id,t,d)=>{const e=$(id);e.textContent=t;if(d){const s=document.createElement('small');s.textContent=d;e.append(s)}};
 document.querySelectorAll('#levels button').forEach((b,i)=>b.onclick=()=>{
   lv=i;const[n,,t]=LV[i];$('lvname').textContent=n;
   $('lvtime').textContent=t?'1回答'+t/60+'分の制限時間あり':'制限時間なし';show('intro')});
-$('go').onclick=()=>{used=[];
+$('go').onclick=()=>{used=[];side=[];
   const pool=E.map((_,i)=>i).filter(i=>E[i].g<=lv);
   drop=new Set(pool.map(i=>[Math.random(),i]).sort((a,b)=>a[0]-b[0]).slice(0,Math.round(pool.length*.1)).map(x=>x[1]));
   miss=ok=turns=0;$('list').innerHTML='';say('bc','');say('bm','');$('miss').textContent=0;show('game');mine()};
@@ -34,11 +36,15 @@ $('f').onsubmit=e=>{
   if(used.includes(k)){say('bm',E[k].name);return end(0,'すでに出た言葉です')}
   put(k,0);ok++;cpu();
 };
-function put(k,w){
-  used.push(k);const e=E[k];say(w?'bc':'bm',e.name,w?e.d:'');
-  const li=document.createElement('li');li.className=w?'c':'m';li.textContent=e.name;
-  $('list').append(li);$('list').scrollTop=1e9;
+function put(k,w){used.push(k);side.push(w);const e=E[k];say(w?'bc':'bm',e.name,w?e.d:'');draw()}
+function draw(){
+  const o=used.map((_,i)=>i);if(sm)o.sort((a,b)=>R[used[a]].localeCompare(R[used[b]],'ja'));
+  const L=$('list');L.innerHTML='';
+  o.forEach(i=>{const li=document.createElement('li');li.className=side[i]?'c':'m';li.textContent=E[used[i]].name;L.append(li)});
+  if(!sm)L.scrollTop=1e9;
 }
+document.querySelectorAll('.sort button').forEach(b=>b.onclick=()=>{
+  sm=+b.dataset.s;document.querySelectorAll('.sort button').forEach(x=>x.classList.toggle('on',x===b));if(used)draw()});
 function cpu(){
   if(used.length>=E.length)return end(1,'答えが全部出切りました');
   turns++;lock(true);$('msg').textContent='';say('bc','…');
